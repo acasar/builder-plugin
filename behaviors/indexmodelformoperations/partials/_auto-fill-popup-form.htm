@@ -21,7 +21,6 @@
                 <th><span>Column name</span></th>
                 <th><span>Column type</span></th>
                 <th><span>Form field</span></th>
-                <th class="list-setup"><a href="/" title="List options"></a></th>
             </tr>
             </thead>
             <tbody>
@@ -29,14 +28,25 @@
                 <tr>
                     <td class="list-checkbox nolink">
                         <div class="checkbox custom-checkbox nolabel">
-                            <input id="checkbox_column_<?=$column['id']?>" type="checkbox" />
-                            <label for="checkbox_column_<?=$column['id']?>">Check</label>
+                            <input id="checkbox_column_<?= $column['id'] ?>" type="checkbox" />
+                            <label for="checkbox_column_<?= $column['id'] ?>">Check</label>
                         </div>
                     </td>
                     <td><?=$column['name']?></td>
                     <td><?=$column['type']?></td>
-                    <td>dropdown</td>
-                    <td>&nbsp;</td>
+                    <td>
+                        <select class="form-control custom-select">
+                            <?php foreach ($controlGroups as $index=>$group): ?>
+                            <optgroup label="<?= e($group) ?>">
+                                <?php foreach ($registeredControls[$group] as $controlCode=>$controlInfo): ?>
+                                    <option value="<?= e($controlCode) ?>">
+                                        <?= e(trans($controlInfo['name'])) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </optgroup>
+                            <?php endforeach; ?>
+                        </select>
+                    </td>
                 </tr>
             <?php endforeach; ?>
             </tbody>
