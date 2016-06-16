@@ -92,6 +92,7 @@ return [
         'saved' => 'Form saved',
         'confirm_delete' => 'Delete the form?',
         'tab_new_form' => 'New form',
+        'auto_fill' => 'Auto-fill',
         'property_label_title' => 'Label',
         'property_label_required' => 'Please specify the control label.',
         'property_span_title' => 'Span',

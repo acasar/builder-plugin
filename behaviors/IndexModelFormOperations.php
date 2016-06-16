@@ -1,5 +1,6 @@
 <?php namespace RainLab\Builder\Behaviors;
 
+use RainLab\Builder\Classes\DatabaseTableModel;
 use RainLab\Builder\Classes\IndexOperationsBehaviorBase;
 use RainLab\Builder\Classes\ModelFormModel;
 use RainLab\Builder\Classes\PluginCode;
@@ -33,6 +34,26 @@ class IndexModelFormOperations extends IndexOperationsBehaviorBase
         $formBulder = new FormBuilder($controller, $defaultBuilderField);
         $formBulder->alias = 'defaultFormBuilder';
         $formBulder->bindToController();
+    }
+
+    public function onModelFormShowAutoFillPopup()
+    {
+        return $this->makePartial('auto-fill-popup-form', [
+            'columns' => $this->getTableColumns()
+        ]);
+    }
+
+    protected function getTableColumns()
+    {
+        $modelClass = Input::get('model_class');
+        $pluginNamespace = $this->getPluginCode()->toPluginNamespace();
+        $modelFullClass = $pluginNamespace.'\\Models\\'.$modelClass;
+
+        $instance = new $modelFullClass;
+        $tableModel = new DatabaseTableModel;
+        $tableModel->load($instance->getTable());
+
+        return $tableModel->columns;
     }
 
     public function onModelFormCreateOrOpen()
