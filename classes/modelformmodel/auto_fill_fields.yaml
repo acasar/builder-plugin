@@ -1,0 +1,33 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    columns:
+        tab: rainlab.builder::lang.list.tab_columns
+        type: datatable
+        btnAddRowLabel: rainlab.builder::lang.list.btn_add_column
+        btnDeleteRowLabel: rainlab.builder::lang.list.btn_delete_column
+        columns:
+            field:
+                title: Field
+                type: autocomplete
+                fillFrom: model-fields
+                validation:
+                    required:
+                        message: rainlab.builder::lang.list.column_dbfield_required
+            label:
+                title: Label
+                type: builderLocalization
+                validation:
+                    required:
+                        message: rainlab.builder::lang.list.column_label_required
+            control:
+                title: Control
+                type: dropdown
+                validation:
+                    required:
+                        message: rainlab.builder::lang.list.column_type_required
+    dictionary:
+        type: checkbox
+        label: 'Automatically convert labels to localized strings'
