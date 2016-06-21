@@ -1,7 +1,9 @@
 <?php namespace RainLab\Builder\Behaviors;
 
+use Backend\Behaviors\FormController;
 use RainLab\Builder\Classes\IndexOperationsBehaviorBase;
 use RainLab\Builder\Classes\DatabaseTableModel;
+use RainLab\Builder\Classes\ModelFormAutoFillModel;
 use RainLab\Builder\Classes\ModelFormModel;
 use RainLab\Builder\Classes\ControlLibrary;
 use RainLab\Builder\FormWidgets\FormBuilder;
@@ -24,6 +26,8 @@ class IndexModelFormOperations extends IndexOperationsBehaviorBase
 {
     protected $baseFormConfigFile = '~/plugins/rainlab/builder/classes/modelformmodel/fields.yaml';
 
+    protected $autoFillFormConfigFile = '~/plugins/rainlab/builder/classes/modelformmodel/auto_fill_fields.yaml';
+
     public function __construct($controller)
     {
         parent::__construct($controller);
@@ -38,27 +42,23 @@ class IndexModelFormOperations extends IndexOperationsBehaviorBase
 
     public function onModelFormShowAutoFillPopup()
     {
-        $library = ControlLibrary::instance();
-        $controls = $library->listControls();
+        $widgetConfig = $this->makeConfig($this->autoFillFormConfigFile);
+
+        $pluginCode = $this->getPluginCode();
+        $modelClass = Input::get('model_class');
+        $model = $pluginCode->toPluginNamespace().'\\Models\\'.$modelClass;
+        
+        $widgetConfig->model = ModelFormAutoFillModel::createFromModel($model);
+        $widgetConfig->alias = 'form_auto_fill_' . md5(get_class($this)) . uniqid();
+
+        $widget = $this->makeWidget('Backend\Widgets\Form', $widgetConfig);
+        $widget->context = FormController::CONTEXT_CREATE;
 
         return $this->makePartial('auto-fill-popup-form', [
-            'columns' => $this->getTableColumns(),
-            'registeredControls' => $controls,
-            'controlGroups' => array_keys($controls)
+            'form' => $widget,
+            'pluginCode' => $pluginCode->toCode(),
+            'modelClass' => $modelClass
         ]);
-    }
-
-    protected function getTableColumns()
-    {
-        $modelClass = Input::get('model_class');
-        $pluginNamespace = $this->getPluginCode()->toPluginNamespace();
-        $modelFullClass = $pluginNamespace.'\\Models\\'.$modelClass;
-
-        $instance = new $modelFullClass;
-        $tableModel = new DatabaseTableModel;
-        $tableModel->load($instance->getTable());
-
-        return $tableModel->columns;
     }
 
     public function onModelFormCreateOrOpen()

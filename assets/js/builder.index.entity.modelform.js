@@ -94,6 +94,10 @@
         $.oc.builder.formbuilder.controlPalette.closeInContainer(ev)
     }
 
+    ModelForm.prototype.cmdAutoFillForm = function(ev) {
+        alert('saving');
+    }
+
     // INTERNAL METHODS
     // ============================
 

@@ -1,69 +1,20 @@
 <?= Form::open([
-    'data-builder-command'=>'localization:cmdCopyMissingStrings'
+    'data-builder-command'=>'modelForm:cmdAutoFillForm',
+    'data-sub-entity' => 'model-list'
 ]) ?>
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="popup">&times;</button>
     <h4 class="modal-title"><?= e(trans('rainlab.builder::lang.localization.add_missing_strings')) ?></h4>
 </div>
-
 <div class="modal-body">
-    <?php if ($columns): ?>
-    <div class="control-list list-unresponsive">
-        <table class="table data" data-control="rowlink">
-            <thead>
-            <tr>
-                <th class="list-checkbox">
-                    <div class="checkbox custom-checkbox nolabel">
-                        <input type="checkbox" id="checkboxAll" />
-                        <label for="checkboxAll"></label>
-                    </div>
-                </th>
-                <th><span>Column name</span></th>
-                <th><span>Column type</span></th>
-                <th><span>Form field</span></th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php foreach($columns as $column): ?>
-                <tr>
-                    <td class="list-checkbox nolink">
-                        <div class="checkbox custom-checkbox nolabel">
-                            <input id="checkbox_column_<?= $column['id'] ?>" type="checkbox" />
-                            <label for="checkbox_column_<?= $column['id'] ?>">Check</label>
-                        </div>
-                    </td>
-                    <td><?=$column['name']?></td>
-                    <td><?=$column['type']?></td>
-                    <td>
-                        <select class="form-control custom-select">
-                            <?php foreach ($controlGroups as $index=>$group): ?>
-                            <optgroup label="<?= e($group) ?>">
-                                <?php foreach ($registeredControls[$group] as $controlCode=>$controlInfo): ?>
-                                    <option value="<?= e($controlCode) ?>">
-                                        <?= e(trans($controlInfo['name'])) ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </optgroup>
-                            <?php endforeach; ?>
-                        </select>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-            </tbody>
-        </table>
-    </div>
-    <?php else: ?>
-    <p><?= e(trans('rainlab.builder::lang.localization.no_languages_to_copy_from')) ?></p>
-    <?php endif ?>
+    <?= $form->render() ?>
 </div>
 <div class="modal-footer">
-    <?php if ($columns): ?>
     <button
             type="submit"
             class="btn btn-primary">
         <?= e(trans('rainlab.builder::lang.localization.copy')) ?>
     </button>
-    <?php endif ?>
     <button
             type="button"
             class="btn btn-default"
@@ -71,4 +22,7 @@
         <?= e(trans('backend::lang.form.cancel')) ?>
     </button>
 </div>
+<input type="hidden" name="plugin_code" value="<?= e($pluginCode) ?>">
+<input type="hidden" name="model_class" value="<?= e($modelClass) ?>">
+<input type="hidden" name="file_name" value="">
 <?= Form::close() ?>
