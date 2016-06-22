@@ -104,7 +104,7 @@
             var control = $(this).find('[data-column=control] [data-container]').val();
 
             $.oc.builder.formbuilder.controller.addControlToPlaceholder(
-                document.body.querySelector('[data-builder-placeholder]'), control, label, field
+                $('.layout-fill-container.active [data-builder-placeholder]')[0], control, label, field
             );
         });
 

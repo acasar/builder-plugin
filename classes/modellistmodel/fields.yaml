@@ -44,7 +44,7 @@ tabs:
                         required: 
                             message: rainlab.builder::lang.list.column_type_required
                     type: dropdown
-                    options:
+                    options: 
                         text: rainlab.builder::lang.list.column_type_text
                         number: rainlab.builder::lang.list.column_type_number
                         switch: rainlab.builder::lang.list.column_type_switch

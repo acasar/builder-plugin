@@ -13,29 +13,20 @@ fields:
                 title: Field
                 type: autocomplete
                 fillFrom: model-fields
-                validation:
-                    required:
-                        message: rainlab.builder::lang.list.column_dbfield_required
             label:
                 title: Label
                 type: builderLocalization
-                validation:
-                    required:
-                        message: rainlab.builder::lang.list.column_label_required
             control:
                 title: Control
                 type: dropdown
-                validation:
-                    required:
-                        message: rainlab.builder::lang.list.column_type_required
                 options:
-                    text: Text
-                    password: Password
-                    number: Number
-                    checkbox: Checkbox
-                    switch: Switch
+                    text: 'Text'
+                    password: 'Password'
+                    number: 'Number'
+                    checkbox: 'Checkbox'
+                    switch: 'Switch'
                     textarea: 'Text area'
-                    dropdown: Dropdown
+                    dropdown: 'Dropdown'
                     radio: 'Radio List'
                     checkboxlist: 'Checkbox list'
                     codeeditor: 'Code editor'
