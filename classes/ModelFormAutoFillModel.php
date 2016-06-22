@@ -15,10 +15,11 @@ class ModelFormAutoFillModel extends BaseModel
 
     protected static $fillable = ['columns'];
     
-    public static function createFromModel($model)
+    public static function createFromModel($referenceModelClass)
     {
-        $referenceModel = new $model;
+        $model = new static;
         $tableModel = new DatabaseTableModel;
+        $referenceModel = new $referenceModelClass;
         $tableModel->load($referenceModel->getTable());
 
         $columns = [];
@@ -33,23 +34,22 @@ class ModelFormAutoFillModel extends BaseModel
 
             $columns[] = [
                 'field'   => $column['name'],
-                'label'   => static::getDefaultColumnLabel($column),
-                'control' => static::getDefaultColumnControl($column)
+                'label'   => $model->getDefaultColumnLabel($column),
+                'control' => $model->getDefaultColumnControl($column)
             ];
         }
 
-        $model = new static;
         $model->fill(['columns' => $columns]);
 
         return $model;
     }
 
-    protected static function getDefaultColumnLabel($column)
+    protected function getDefaultColumnLabel($column)
     {
         return ucfirst(str_replace('_', ' ', snake_case($column['name'])));
     }
 
-    protected static function getDefaultColumnControl($column)
+    protected function getDefaultColumnControl($column)
     {
         switch($column['type']) {
             case 'smallint':
