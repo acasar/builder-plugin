@@ -56,19 +56,19 @@ class ModelFormAutoFillModel extends BaseModel
             case 'integer':
             case 'bigint':
                 return ends_with($column['name'], '_id') ? 'relation' : 'number';
+            case 'decimal':
+            case 'float':
+                return 'number';
+            case 'text':
+                return 'textarea';
+            case 'boolean':
+                return 'switch';
+            case 'date':
+            case 'time':
+            case 'datetime':
+                return 'datepicker';
             default:
                 return 'text';
         }
-    }
-
-    public function getTypeOptions()
-    {
-        $library = ControlLibrary::instance();
-
-        return [
-            'text' => 'Text',
-            'number' => 'Number',
-            'relation' => 'Relation'
-        ];
     }
 }

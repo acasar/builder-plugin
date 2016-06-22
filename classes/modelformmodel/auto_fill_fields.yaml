@@ -28,6 +28,25 @@ fields:
                 validation:
                     required:
                         message: rainlab.builder::lang.list.column_type_required
+                options:
+                    text: Text
+                    password: Password
+                    number: Number
+                    checkbox: Checkbox
+                    switch: Switch
+                    textarea: 'Text area'
+                    dropdown: Dropdown
+                    radio: 'Radio List'
+                    checkboxlist: 'Checkbox list'
+                    codeeditor: 'Code editor'
+                    colorpicker: 'Color picker'
+                    datepicker: 'Date picker'
+                    richeditor: 'Rich editor'
+                    markdown: 'Markdown editor'
+                    fileupload: 'Markdown editor'
+                    recordfinder: 'Record finder'
+                    mediafinder: 'Media finder'
+                    relation: 'Relation'
     dictionary:
         type: checkbox
         label: 'Automatically convert labels to localized strings'

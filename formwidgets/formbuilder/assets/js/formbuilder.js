@@ -394,7 +394,7 @@
         return fieldName
     }
 
-    FormBuilder.prototype.addControlToPlaceholder = function(placeholder, controlType, controlName, noNewPlaceholder) {
+    FormBuilder.prototype.addControlToPlaceholder = function(placeholder, controlType, controlName, controlFieldName, noNewPlaceholder) {
         // Duplicate the placeholder and place it after 
         // the existing one
         if (!noNewPlaceholder) {
@@ -417,7 +417,7 @@
         placeholder.innerHTML = ''
         placeholder.removeAttribute('data-builder-placeholder')
 
-        var fieldName = this.generateFieldName(controlType, placeholder)
+        var fieldName = controlFieldName ? controlFieldName : this.generateFieldName(controlType, placeholder)
 
         // Send request to the server to load the 
         // control markup, Inspector data schema, inspector title, etc.
@@ -458,13 +458,13 @@
         $.oc.builder.formbuilder.controlPalette.loadControlPalette(element, this.getControlId(element))
     }
 
-    FormBuilder.prototype.addControlFromControlPalette = function(placeholderId, controlType, controlName) {
+    FormBuilder.prototype.addControlFromControlPalette = function(placeholderId, controlType, controlName, controlFieldName) {
         var placeholder = document.body.querySelector('li[data-builder-control-id="'+placeholderId+'"]')
         if (!placeholder) {
             return
         }
 
-        return this.addControlToPlaceholder(placeholder, controlType, controlName)
+        return this.addControlToPlaceholder(placeholder, controlType, controlName, controlFieldName)
     }
 
     // REMOVING CONTROLS

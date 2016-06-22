@@ -1,16 +1,13 @@
 <?php namespace RainLab\Builder\Behaviors;
 
-use Backend\Behaviors\FormController;
 use RainLab\Builder\Classes\IndexOperationsBehaviorBase;
-use RainLab\Builder\Classes\DatabaseTableModel;
 use RainLab\Builder\Classes\ModelFormAutoFillModel;
 use RainLab\Builder\Classes\ModelFormModel;
-use RainLab\Builder\Classes\ControlLibrary;
 use RainLab\Builder\FormWidgets\FormBuilder;
 use RainLab\Builder\Classes\ModelModel;
+use Backend\Behaviors\FormController;
 use Backend\Classes\FormField;
 use ApplicationException;
-use Exception;
 use Request;
 use Flash;
 use Input;
@@ -42,21 +39,23 @@ class IndexModelFormOperations extends IndexOperationsBehaviorBase
 
     public function onModelFormShowAutoFillPopup()
     {
-        $widgetConfig = $this->makeConfig($this->autoFillFormConfigFile);
-
-        $pluginCode = $this->getPluginCode();
+        $pluginCodeObj = $this->getPluginCode();
         $modelClass = Input::get('model_class');
-        $model = $pluginCode->toPluginNamespace().'\\Models\\'.$modelClass;
-        
-        $widgetConfig->model = ModelFormAutoFillModel::createFromModel($model);
-        $widgetConfig->alias = 'form_auto_fill_' . md5(get_class($this)) . uniqid();
+        $modelReference = $pluginCodeObj->toPluginNamespace().'\\Models\\'.$modelClass;
+
+        $model = ModelFormAutoFillModel::createFromModel($modelReference);
+        $model->setPluginCodeObj($pluginCodeObj);
+
+        $widgetConfig = $this->makeConfig($this->autoFillFormConfigFile);
+        $widgetConfig->model = $model;
+        $widgetConfig->alias = 'form_auto_fill_'.md5(get_class($this)).uniqid();
 
         $widget = $this->makeWidget('Backend\Widgets\Form', $widgetConfig);
         $widget->context = FormController::CONTEXT_CREATE;
 
         return $this->makePartial('auto-fill-popup-form', [
             'form' => $widget,
-            'pluginCode' => $pluginCode->toCode(),
+            'pluginCode' => $pluginCodeObj->toCode(),
             'modelClass' => $modelClass
         ]);
     }

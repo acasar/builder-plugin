@@ -95,7 +95,20 @@
     }
 
     ModelForm.prototype.cmdAutoFillForm = function(ev) {
-        alert('saving');
+        ev.preventDefault();
+        ev.stopPropagation();
+
+        $('#auto-fill-form .field-datatable [data-row]').each(function() {
+            var field = $(this).find('[data-column=field] [data-container]').val();
+            var label = $(this).find('[data-column=label] [data-container]').val();
+            var control = $(this).find('[data-column=control] [data-container]').val();
+
+            $.oc.builder.formbuilder.controller.addControlToPlaceholder(
+                document.body.querySelector('[data-builder-placeholder]'), control, label, field
+            );
+        });
+
+        $('#auto-fill-form').closest('.modal').modal('hide');
     }
 
     // INTERNAL METHODS
