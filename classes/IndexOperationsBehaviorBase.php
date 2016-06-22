@@ -43,5 +43,4 @@ abstract class IndexOperationsBehaviorBase extends ControllerBehavior
     }
 
     abstract protected function loadOrCreateBaseModel($modelCode, $options = []);
-
 }
